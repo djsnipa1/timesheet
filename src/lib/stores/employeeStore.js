@@ -40,7 +40,7 @@ function createEmployeeStore() {
       update(state => ({ ...state, isLoading: true, error: null }));
       try {
         const timeEntries = await fetchData(
-          `/api/timeentries/${employeeId}`,
+          `/api/time-entries/${employeeId}`,
           'Failed to fetch time entries'
         );
         update(state => ({ ...state, timeEntries, isLoading: false }));
@@ -56,7 +56,7 @@ function createEmployeeStore() {
 
         // Then use the employee ID to get time entries
         const timeEntries = employee?.id
-          ? await fetchData(`/api/timeentries/${employee.id}`, 'Failed to fetch time entries')
+          ? await fetchData(`/api/time-entries`, 'Failed to fetch time entries')
           : [];
 
         update(state => ({
@@ -84,4 +84,4 @@ function createEmployeeStore() {
   };
 }
 
-export const employeeStore = createEmployeeStore(); 
+export const employeeStore = createEmployeeStore();
