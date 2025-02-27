@@ -13,11 +13,55 @@
 		department: 'Maintenance'
 	};
 
+	// Helper functions for date/time formatting
+	const formatDate = (date) => {
+		return new Date(date).toLocaleDateString('en-US', {
+			year: 'numeric',
+			month: 'long',
+			day: 'numeric'
+		});
+	};
+
+	const formatTime = (date) => {
+		return new Date(date).toLocaleTimeString('en-US', {
+			hour: '2-digit',
+			minute: '2-digit'
+		});
+	};
+
+	const calculateDuration = (duration) => {
+		// Parse PT2H45M format
+		const hours = duration.match(/(\d+)H/)?.[1] || 0;
+		const minutes = duration.match(/(\d+)M/)?.[1] || 0;
+		return `${hours}h ${minutes}m`;
+	};
+
 	onMount(() => {
 		employeeStore.fetchAll();
 	});
 
 	$: ({ employee, timeEntries, isLoading, error } = $employeeStore);
+	$: console.log('Store Data:', {
+		employee,
+		timeEntries,
+		isLoading,
+		error
+	});
+
+	$: console.log('Time Entries before loop:', timeEntries);
+	$: console.log('Debug Info:', {
+		isStoreEmpty: !$employeeStore,
+		isTimeEntriesArray: Array.isArray(timeEntries),
+		timeEntriesLength: timeEntries?.length,
+		timeEntriesData: timeEntries,
+		storeState: $employeeStore
+	});
+
+	$: console.log('Debug Info:', {
+		timeEntriesArray: Array.isArray(timeEntries),
+		firstEntry: timeEntries?.[0],
+		timeEntriesCount: timeEntries?.length
+	});
 </script>
 
 <div
@@ -63,7 +107,7 @@
 						</div>
 						<div>
 							<strong class="text-gruvbox-aqua">Department:</strong>
-							<span class="ml-2">{employee?.department || ''}</span>
+							<span class="ml-2">{employeeStatic?.department || ''}</span>
 						</div>
 					</div>
 				</Card.Content>
@@ -75,34 +119,34 @@
 				</Card.Header>
 				<Card.Content class="p-3 sm:p-4">
 					<div class="space-y-4">
-						<div class="rounded-lg bg-gruvbox-bg p-3 sm:p-4">
-							<div class="mb-2 text-base font-semibold text-gruvbox-blue sm:text-lg">
-								Jan 11, 2000
-							</div>
-							<Separator class="my-2 bg-gruvbox-gray" />
-							<div class="space-y-4">
-								<div class="space-y-1">
-									<span class="block text-sm text-gruvbox-gray-light sm:text-base"
-										>Description:</span
-									>
-									<span></span>
+						{#each timeEntries as entry (entry.id)}
+							<div class="rounded-lg bg-gruvbox-bg p-3 sm:p-4">
+								<div class="mb-2 text-base font-semibold text-gruvbox-blue sm:text-lg">
+									 {entry.description}
 								</div>
+								<Separator class="my-2 bg-gruvbox-gray" />
 								<div class="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-4">
 									<div class="space-y-1">
-										<span class="block text-sm text-gruvbox-green sm:text-base">Clock In:</span>
-										<span></span>
+										<span class="block text-sm text-gruvbox-green sm:text-base">
+											Clock In:
+										</span>
+										<span>{formatTime(entry.timeInterval?.start)}</span>
 									</div>
 									<div class="space-y-1">
-										<span class="block text-sm text-gruvbox-green sm:text-base">Clock Out:</span>
-										<span></span>
+										<span class="block text-sm text-gruvbox-green sm:text-base">
+											Clock Out:
+										</span>
+										<span>{formatTime(entry.timeInterval?.end)}</span>
+									</div>
+									<div class="space-y-1">
+										<span class="block text-sm text-gruvbox-yellow sm:text-base">
+											Duration:
+										</span>
+										<span>{calculateDuration(entry.timeInterval?.duration)}</span>
 									</div>
 								</div>
-								<div class="flex justify-between font-medium">
-									<span class="text-sm text-gruvbox-yellow sm:text-base">Total Hours:</span>
-									<span class="font-se text-sm text-gruvbox-fg sm:text-base">42</span>
-								</div>
 							</div>
-						</div>
+						{/each}
 					</div>
 				</Card.Content>
 			</Card.Root>

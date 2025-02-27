@@ -4,7 +4,7 @@ import { fetchJson, parseTimeEntry } from '$lib/api/timeEntryApi';
 function createEmployeeStore() {
   const { subscribe, set, update } = writable({
     employee: null,
-    timeEntries: [],
+    timeEntries: /** @type {Array<{id: any, description: any, start: Date, end: Date, duration: any, workspaceId: any, userId: any, billable: any, projectId: any, isLocked: any}>} */ ([]),
     isLoading: false,
     error: null
   });
@@ -12,17 +12,40 @@ function createEmployeeStore() {
   const setLoading = () => update(state => ({ ...state, isLoading: true, error: null }));
   const setError = (error) => update(state => ({ ...state, error, isLoading: false }));
 
-  const fetchTimeEntries = async (employee) => {
-    if (!employee?.id) return [];
-    
-    const timeEntries = await fetchJson(
-      `/api/time-entries`,
-      'Failed to fetch time entries'
+  const fetchTimeEntries = async () => {
+    const response = await fetchJson(
+        `/api/time-entries`,
+        'Failed to fetch time entries'
     );
     
-    return Array.isArray(timeEntries) 
-      ? timeEntries.map(parseTimeEntry)
-      : [];
+    console.log('Raw API Response:', response);
+    
+    // Check if response has timeEntries array
+    if (!response?.timeEntries || !Array.isArray(response.timeEntries)) {
+        console.error('Invalid response structure:', response);
+        return [];
+    }
+    
+    const entries = response.timeEntries;
+    console.log('Entries before parsing:', entries);
+    
+    const parsedEntries = entries.map(entry => ({
+        id: entry.id,
+        description: entry.description,
+        timeInterval: {
+            start: entry.timeInterval?.start,
+            end: entry.timeInterval?.end,
+            duration: entry.timeInterval?.duration
+        },
+        workspaceId: entry.workspaceId,
+        userId: entry.userId,
+        billable: entry.billable,
+        projectId: entry.projectId,
+        isLocked: entry.isLocked
+    }));
+    
+    console.log('Parsed Entries:', parsedEntries);
+    return parsedEntries;
   };
 
   return {
@@ -31,16 +54,25 @@ function createEmployeeStore() {
     fetchAll: async () => {
       setLoading();
       try {
-        const employee = await fetchJson('/api/user', 'Failed to fetch employee data');
-        const timeEntries = await fetchTimeEntries(employee);
+        const response = await fetchJson('/api/time-entries', 'Failed to fetch data');
+        console.log('API Response:', response);
+        
+        const employee = response.user;
+        const timeEntries = await fetchTimeEntries();
+
+        if (!Array.isArray(timeEntries)) {
+            throw new Error('Time entries must be an array');
+        }
 
         update(state => ({
-          employee,
-          timeEntries,
-          isLoading: false,
-          error: null
+            ...state,
+            employee,
+            timeEntries,
+            isLoading: false,
+            error: null
         }));
       } catch (err) {
+        console.error('Error in fetchAll:', err);
         setError(err.message);
       }
     },

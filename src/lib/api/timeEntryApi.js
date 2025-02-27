@@ -9,14 +9,16 @@ export const fetchJson = async (endpoint, errorMessage) => {
 };
 
 export const parseTimeEntry = (entry) => ({
-  id: entry.id,
-  description: entry.description,
-  start: new Date(entry.timeInterval.start),
-  end: new Date(entry.timeInterval.end),
-  duration: entry.timeInterval.duration,
-  workspaceId: entry.workspaceId,
-  userId: entry.userId,
-  billable: entry.billable,
-  projectId: entry.projectId,
-  isLocked: entry.isLocked
+    id: entry.id,
+    description: entry.description,
+    timeInterval: {
+        start: entry.timeInterval.start,
+        end: entry.timeInterval.end,
+        duration: entry.timeInterval.duration
+    },
+    workspaceId: entry.workspaceId,
+    userId: entry.userId,
+    billable: entry.billable,
+    projectId: entry.projectId,
+    isLocked: entry.isLocked
 });
