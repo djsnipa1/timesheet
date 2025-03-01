@@ -3,15 +3,9 @@
 	import { Separator } from '$lib/components/ui/separator';
 	import { onMount } from 'svelte';
 	import { employeeStore } from '$lib/stores/employeeStore';
+	import employeeData from '$lib/data/employee.json';
 
-	const employeeStatic = {
-		id: '1',
-		name: 'Charles Boyce',
-		address: '8830 Yardley Ct.\nIndianapolis, IN 46268',
-		phone: '(317) 215-5569',
-		email: 'chadboyce@gmail.com',
-		department: 'Maintenance'
-	};
+	const employeeStatic = employeeData.employee;
 
 	// Helper functions for date/time formatting
 	const formatDate = (date) => {
@@ -99,7 +93,7 @@
 						</div>
 						<div>
 							<strong class="text-gruvbox-aqua">Phone:</strong>
-							<span class="ml-2">{employee?.phone || ''}</span>
+							<span class="ml-2">{employeeStatic?.phone || ''}</span>
 						</div>
 						<div>
 							<strong class="text-gruvbox-aqua">Email:</strong>

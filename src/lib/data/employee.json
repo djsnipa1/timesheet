@@ -1,0 +1,10 @@
+{
+  "employee": {
+    "id": "1",
+    "name": "Charles Boyce",
+    "address": "8830 Yardley Ct.\nIndianapolis, IN 46268",
+    "phone": "(317) 215-5569",
+    "email": "chadboyce@gmail.com",
+    "department": "Maintenance"
+  }
+}
