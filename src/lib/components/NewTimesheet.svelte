@@ -8,11 +8,29 @@
 	const employeeStatic = employeeData.employee;
 
 	// Helper functions for date/time formatting
+	const formatDateOld = (date) => {
+	    if (!date) return '';
+	    try {
+	        const parsedDate = new Date(date);
+	        if (isNaN(parsedDate.getTime())) {
+	            return 'Invalid Date';
+	        }
+	        return parsedDate.toLocaleDateString('en-US', {
+	            month: 'numeric',
+	            day: 'numeric',
+	            year: 'numeric'
+	        });
+	    } catch (error) {
+	        console.error('Error formatting date:', error);
+	        return 'Invalid Date';
+	    }
+	};
+
 	const formatDate = (date) => {
 		return new Date(date).toLocaleDateString('en-US', {
-			year: 'numeric',
 			month: 'long',
-			day: 'numeric'
+			day: 'numeric',
+			year: 'numeric'
 		});
 	};
 
@@ -59,7 +77,7 @@
 </script>
 
 <div
-	class="min-h-screen w-full bg-gruvbox-bg p-2 text-gruvbox-fg md:container md:mx-auto md:max-w-2xl"
+	class="w-full min-h-screen p-2 bg-gruvbox-bg text-gruvbox-fg md:container md:mx-auto md:max-w-2xl"
 >
 	<h1 class="mb-4 text-xl font-bold text-gruvbox-blue">Employee Timesheet</h1>
 
@@ -68,7 +86,7 @@
 			<span class="text-gruvbox-blue">Loading...</span>
 		</div>
 	{:else if error}
-		<div class="rounded-lg bg-gruvbox-red/10 p-4 text-center text-gruvbox-red">
+		<div class="p-4 text-center rounded-lg bg-gruvbox-red/10 text-gruvbox-red">
 			<span>Error: {error}</span>
 		</div>
 	{:else}
@@ -81,7 +99,7 @@
 					<div class="grid grid-cols-1 gap-3 text-sm sm:grid-cols-2 sm:gap-4">
 					<div>
 							<strong class="text-gruvbox-aqua">Name:</strong>
-							<span class="ml-2">{employee?.name || ''}</span>
+							<span class="ml-2">{employeeStatic?.name || ''}</span>
 						</div>
 						<!-- <div>
 							<strong class="text-gruvbox-aqua">ID:</strong>
@@ -99,10 +117,10 @@
 							<strong class="text-gruvbox-aqua">Email:</strong>
 							<span class="ml-2">{employee?.email || ''}</span>
 						</div>
-						<div>
-							<strong class="text-gruvbox-aqua">Department:</strong>
-							<span class="ml-2">{employeeStatic?.department || ''}</span>
-						</div>
+						<!-- <div> -->
+							<!-- <strong class="text-gruvbox-aqua">Department:</strong> -->
+							<!-- <span class="ml-2">{employeeStatic?.department || ''}</span> -->
+						<!-- </div> -->
 					</div>
 				</Card.Content>
 			</Card.Root>
@@ -114,29 +132,29 @@
 				<Card.Content class="p-3 sm:p-4">
 					<div class="space-y-4">
 						{#each timeEntries as entry (entry.id)}
-							<div class="rounded-lg bg-gruvbox-bg p-3 sm:p-4">
-								<div class="mb-2 text-base font-semibold text-gruvbox-blue sm:text-lg">
-									 {entry.description}
+							<div class="p-3 rounded-lg bg-gruvbox-bg sm:p-4">
+								<div class="mb-2 text-base font-semibold text-black sm:text-lg">
+									 {formatDate(entry.timeInterval?.start)}
 								</div>
 								<Separator class="my-2 bg-gruvbox-gray" />
-								<div class="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-4">
+								<div class="mb-2 text-base font-semibold text-gruvbox-blue sm:text-sm">
+									Description: <span class="font-normal text-black">{entry.description}</span>
+								</div>
+								<div class="grid grid-cols-1 gap-1 sm:grid-cols-2">
 									<div class="space-y-1">
-										<span class="block text-sm text-gruvbox-green sm:text-base">
-											Clock In:
+										<span class="block text-sm font-semibold text-gruvbox-blue">
+											Clock In: <span class="font-normal text-black">{formatTime(entry.timeInterval?.start)}</span>
 										</span>
-										<span>{formatTime(entry.timeInterval?.start)}</span>
 									</div>
 									<div class="space-y-1">
-										<span class="block text-sm text-gruvbox-green sm:text-base">
-											Clock Out:
+										<span class="block text-sm font-semibold text-gruvbox-blue">
+											Clock Out: <span class="font-normal text-black">{formatTime(entry.timeInterval?.end)}</span>
 										</span>
-										<span>{formatTime(entry.timeInterval?.end)}</span>
 									</div>
 									<div class="space-y-1">
-										<span class="block text-sm text-gruvbox-yellow sm:text-base">
-											Duration:
+										<span class="block text-sm font-semibold text-gruvbox-blue">
+											Total Hours: <span class="font-normal text-black">{calculateDuration(entry.timeInterval?.duration)}</span>
 										</span>
-										<span>{calculateDuration(entry.timeInterval?.duration)}</span>
 									</div>
 								</div>
 							</div>
