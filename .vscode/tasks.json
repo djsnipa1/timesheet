@@ -1,0 +1,25 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+      {
+        "label": "run pnpm dev",
+        "type": "shell",
+        "command": "pnpm run dev",
+        "isBackground": true,
+        "presentation": {
+          "clear": true,
+          "panel": "new",
+          "showReuseMessage": false,
+          "echo": true,
+          "reveal": "always",
+          "focus": false
+        },
+        "runOptions": {
+          "runOn": "folderOpen"
+        },
+        "problemMatcher": [
+          "$eslint-compact"
+        ]
+      }
+    ]
+  }
