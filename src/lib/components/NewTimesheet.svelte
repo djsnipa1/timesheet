@@ -7,6 +7,10 @@
 
 	const employeeStatic = employeeData.employee;
 
+	// Add props
+	export let year;
+	export let month;
+
 	// Helper functions for date/time formatting
 	const formatDateOld = (date) => {
 	    if (!date) return '';
@@ -74,6 +78,12 @@
 		firstEntry: timeEntries?.[0],
 		timeEntriesCount: timeEntries?.length
 	});
+
+	// Filter time entries for the selected month
+	$: filteredEntries = timeEntries?.filter(entry => {
+		const entryDate = new Date(entry.timeInterval.start);
+		return entryDate.getFullYear() === year && entryDate.getMonth() === month - 1;
+	}) ?? [];
 </script>
 
 <div
@@ -131,7 +141,7 @@
 				</Card.Header>
 				<Card.Content class="p-3 sm:p-4">
 					<div class="space-y-4">
-						{#each timeEntries as entry (entry.id)}
+						{#each filteredEntries as entry (entry.id)}
 							<div class="p-3 rounded-lg bg-gruvbox-bg sm:p-4">
 								<div class="mb-2 text-base font-semibold text-black sm:text-lg">
 									 {formatDate(entry.timeInterval?.start)}
