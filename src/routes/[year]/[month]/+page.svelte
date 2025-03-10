@@ -6,7 +6,7 @@
     const monthName = new Date(data.year, data.month - 1).toLocaleString('default', { month: 'long' });
   </script>
   
-  <div class="container px-4 mx-auto">
-    <h1 class="mb-4 text-2xl font-bold">Timesheet for {monthName} {data.year}</h1>
+  <div class="container px-4 mx-auto bg-gruvbox-bg">
+    <!-- <h1 class="mb-4 text-2xl font-bold">Time Sheet for {monthName} {data.year}</h1> -->
     <NewTimesheet year={data.year} month={data.month} />
   </div>

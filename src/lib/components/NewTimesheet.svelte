@@ -13,21 +13,21 @@
 
 	// Helper functions for date/time formatting
 	const formatDateOld = (date) => {
-	    if (!date) return '';
-	    try {
-	        const parsedDate = new Date(date);
-	        if (isNaN(parsedDate.getTime())) {
-	            return 'Invalid Date';
-	        }
-	        return parsedDate.toLocaleDateString('en-US', {
-	            month: 'numeric',
-	            day: 'numeric',
-	            year: 'numeric'
-	        });
-	    } catch (error) {
-	        console.error('Error formatting date:', error);
-	        return 'Invalid Date';
-	    }
+		if (!date) return '';
+		try {
+			const parsedDate = new Date(date);
+			if (isNaN(parsedDate.getTime())) {
+				return 'Invalid Date';
+			}
+			return parsedDate.toLocaleDateString('en-US', {
+				month: 'numeric',
+				day: 'numeric',
+				year: 'numeric'
+			});
+		} catch (error) {
+			console.error('Error formatting date:', error);
+			return 'Invalid Date';
+		}
 	};
 
 	const formatDate = (date) => {
@@ -53,15 +53,15 @@
 	};
 
 	const calculateTotalDuration = (entries) => {
-	    const totalMinutes = entries.reduce((total, entry) => {
-	        const hours = parseInt(entry.timeInterval.duration.match(/(\d+)H/)?.[1] || 0);
-	        const minutes = parseInt(entry.timeInterval.duration.match(/(\d+)M/)?.[1] || 0);
-	        return total + (hours * 60) + minutes;
-	    }, 0);
+		const totalMinutes = entries.reduce((total, entry) => {
+			const hours = parseInt(entry.timeInterval.duration.match(/(\d+)H/)?.[1] || 0);
+			const minutes = parseInt(entry.timeInterval.duration.match(/(\d+)M/)?.[1] || 0);
+			return total + hours * 60 + minutes;
+		}, 0);
 
-	    const hours = Math.floor(totalMinutes / 60);
-	    const minutes = totalMinutes % 60;
-	    return `${hours}h ${minutes}m`;
+		const hours = Math.floor(totalMinutes / 60);
+		const minutes = totalMinutes % 60;
+		return `${hours}h ${minutes}m`;
 	};
 
 	onMount(() => {
@@ -92,21 +92,22 @@
 	});
 
 	// Filter time entries for the selected month
-	$: filteredEntries = timeEntries?.filter(entry => {
-		const entryDate = new Date(entry.timeInterval.start);
-		return entryDate.getFullYear() === year && entryDate.getMonth() === month - 1;
-	}) ?? [];
+	$: filteredEntries =
+		timeEntries?.filter((entry) => {
+			const entryDate = new Date(entry.timeInterval.start);
+			return entryDate.getFullYear() === year && entryDate.getMonth() === month - 1;
+		}) ?? [];
 
 	// Add this function to group entries by date
 	const groupEntriesByDate = (entries) => {
-	    return entries.reduce((acc, entry) => {
-	        const date = formatDate(entry.timeInterval.start);
-	        if (!acc[date]) {
-	            acc[date] = [];
-	        }
-	        acc[date].push(entry);
-	        return acc;
-	    }, {});
+		return entries.reduce((acc, entry) => {
+			const date = formatDate(entry.timeInterval.start);
+			if (!acc[date]) {
+				acc[date] = [];
+			}
+			acc[date].push(entry);
+			return acc;
+		}, {});
 	};
 
 	// Modify the filtered entries to be grouped
@@ -116,7 +117,13 @@
 <div
 	class="w-full min-h-screen p-2 bg-gruvbox-bg text-gruvbox-fg md:container md:mx-auto md:max-w-2xl"
 >
-	<h1 class="mb-4 text-xl font-bold text-gruvbox-blue">Employee Timesheet</h1>
+	<div class="flex items-center justify-around mb-4">
+		<h1 class="text-2xl font-bold text-gruvbox-blue">
+			Employee Time Sheet
+			<span class="mx-4 text-lg">&#x221e;</span>
+			{new Date(year, month - 1).toLocaleString('default', { month: 'long', year: 'numeric' })}
+		</h1>
+	</div>
 
 	{#if isLoading}
 		<div class="p-4 text-center">
@@ -134,7 +141,7 @@
 				</Card.Header>
 				<Card.Content class="p-3 sm:p-4">
 					<div class="grid grid-cols-1 gap-3 text-sm sm:grid-cols-2 sm:gap-4">
-					<div>
+						<div>
 							<strong class="text-gruvbox-aqua">Name:</strong>
 							<span class="ml-2">{employeeStatic?.name || ''}</span>
 						</div>
@@ -155,8 +162,8 @@
 							<span class="ml-2">{employee?.email || ''}</span>
 						</div>
 						<!-- <div> -->
-							<!-- <strong class="text-gruvbox-aqua">Department:</strong> -->
-							<!-- <span class="ml-2">{employeeStatic?.department || ''}</span> -->
+						<!-- <strong class="text-gruvbox-aqua">Department:</strong> -->
+						<!-- <span class="ml-2">{employeeStatic?.department || ''}</span> -->
 						<!-- </div> -->
 					</div>
 				</Card.Content>
@@ -167,42 +174,48 @@
 					<Card.Title class="text-lg text-gruvbox-purple">Time Entries</Card.Title>
 				</Card.Header>
 				<Card.Content class="p-3 sm:p-4">
-				    <div class="space-y-4">
-				        {#each Object.entries(groupedFilteredEntries) as [date, entries] (date)}
-				            <div class="p-3 rounded-lg bg-gruvbox-bg sm:p-4">
-				                <div class="mb-2 text-base font-semibold text-black sm:text-lg">
-				                    {date}
-				                </div>
-				                <Separator class="my-2 bg-gruvbox-gray" />
-				                {#each entries as entry}
-				                    <div class="mb-4">
-				                        <div class="mb-2 text-base font-semibold text-gruvbox-blue sm:text-sm">
-				                            Description: <span class="font-normal text-black">{entry.description}</span>
-				                        </div>
-				                        <div class="grid grid-cols-1 gap-1 sm:grid-cols-2">
-				                            <div class="space-y-1">
-				                                <span class="block text-sm font-semibold text-gruvbox-blue">
-				                                    Clock In: <span class="font-normal text-black">{formatTime(entry.timeInterval?.start)}</span>
-				                                </span>
-				                            </div>
-				                            <div class="space-y-1">
-				                                <span class="block text-sm font-semibold text-gruvbox-blue">
-				                                    Clock Out: <span class="font-normal text-black">{formatTime(entry.timeInterval?.end)}</span>
-				                                </span>
-				                            </div>
-				                        </div>
-				                        {#if entry !== entries[entries.length - 1]}
-				                            <Separator class="my-2 bg-gruvbox-gray" />
-				                        {/if}
-				                    </div>
-				                {/each}
-				                <Separator class="my-2 bg-gruvbox-blue" />
-				                <div class="mb-2 text-sm font-semibold text-gruvbox-blue">
-				                    Total Hours: <span class="font-normal text-black">{calculateTotalDuration(entries)}</span>
-				                </div>
-				            </div>
-				        {/each}
-				    </div>
+					<div class="space-y-4">
+						{#each Object.entries(groupedFilteredEntries) as [date, entries] (date)}
+							<div class="p-3 rounded-lg bg-gruvbox-bg sm:p-4">
+								<div class="mb-2 text-base font-semibold text-black sm:text-lg">
+									{date}
+								</div>
+								<Separator class="my-2 bg-gruvbox-gray" />
+								{#each entries as entry}
+									<div class="mb-4">
+										<div class="mb-2 text-base font-semibold text-gruvbox-blue sm:text-sm">
+											Description: <span class="font-normal text-black">{entry.description}</span>
+										</div>
+										<div class="grid grid-cols-1 gap-1 sm:grid-cols-2">
+											<div class="space-y-1">
+												<span class="block text-sm font-semibold text-gruvbox-blue">
+													Clock In: <span class="font-normal text-black"
+														>{formatTime(entry.timeInterval?.start)}</span
+													>
+												</span>
+											</div>
+											<div class="space-y-1">
+												<span class="block text-sm font-semibold text-gruvbox-blue">
+													Clock Out: <span class="font-normal text-black"
+														>{formatTime(entry.timeInterval?.end)}</span
+													>
+												</span>
+											</div>
+										</div>
+										{#if entry !== entries[entries.length - 1]}
+											<Separator class="my-2 bg-gruvbox-gray" />
+										{/if}
+									</div>
+								{/each}
+								<Separator class="my-2 bg-gruvbox-blue" />
+								<div class="mb-2 text-sm font-semibold text-gruvbox-blue">
+									Total Hours: <span class="font-normal text-black"
+										>{calculateTotalDuration(entries)}</span
+									>
+								</div>
+							</div>
+						{/each}
+					</div>
 				</Card.Content>
 			</Card.Root>
 
