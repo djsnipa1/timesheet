@@ -52,6 +52,18 @@
 		return `${hours}h ${minutes}m`;
 	};
 
+	const calculateTotalDuration = (entries) => {
+	    const totalMinutes = entries.reduce((total, entry) => {
+	        const hours = parseInt(entry.timeInterval.duration.match(/(\d+)H/)?.[1] || 0);
+	        const minutes = parseInt(entry.timeInterval.duration.match(/(\d+)M/)?.[1] || 0);
+	        return total + (hours * 60) + minutes;
+	    }, 0);
+
+	    const hours = Math.floor(totalMinutes / 60);
+	    const minutes = totalMinutes % 60;
+	    return `${hours}h ${minutes}m`;
+	};
+
 	onMount(() => {
 		employeeStore.fetchAll();
 	});
@@ -178,17 +190,16 @@
 				                                    Clock Out: <span class="font-normal text-black">{formatTime(entry.timeInterval?.end)}</span>
 				                                </span>
 				                            </div>
-				                            <div class="space-y-1">
-				                                <span class="block text-sm font-semibold text-gruvbox-blue">
-				                                    Total Hours: <span class="font-normal text-black">{calculateDuration(entry.timeInterval?.duration)}</span>
-				                                </span>
-				                            </div>
 				                        </div>
 				                        {#if entry !== entries[entries.length - 1]}
 				                            <Separator class="my-2 bg-gruvbox-gray" />
 				                        {/if}
 				                    </div>
 				                {/each}
+				                <Separator class="my-2 bg-gruvbox-blue" />
+				                <div class="mb-2 text-sm font-semibold text-gruvbox-blue">
+				                    Total Hours: <span class="font-normal text-black">{calculateTotalDuration(entries)}</span>
+				                </div>
 				            </div>
 				        {/each}
 				    </div>
