@@ -1,5 +1,6 @@
 import { writable } from 'svelte/store';
 import { fetchJson, parseTimeEntry } from '$lib/api/timeEntryApi';
+import mockTimeEntriesData from '$lib/data/mockTimeEntries.json';
 
 function createEmployeeStore() {
   const { subscribe, set, update } = writable({
@@ -54,6 +55,18 @@ function createEmployeeStore() {
     fetchAll: async () => {
       setLoading();
       try {
+        if (import.meta.env.DEV) {
+          // Use mock data in development
+          update(state => ({
+            ...state,
+            employee: mockTimeEntriesData.user,
+            timeEntries: mockTimeEntriesData.timeEntries,
+            isLoading: false,
+            error: null
+          }));
+          return;
+        }
+
         const response = await fetchJson('/api/time-entries', 'Failed to fetch data');
         console.log('API Response:', response);
         

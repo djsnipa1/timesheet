@@ -1,0 +1,45 @@
+{
+  "user": {
+    "id": "123",
+    "name": "John Doe",
+    "address": "123 Main St\nAnytown, USA"
+  },
+  "timeEntries": [
+    {
+      "id": "1",
+      "description": "Regular work day",
+      "timeInterval": {
+        "start": "2025-03-18T09:00:00",
+        "end": "2025-03-18T17:00:00",
+        "duration": "PT8H0M"
+      },
+      "workspaceId": "ws1",
+      "userId": "123",
+      "billable": true,
+      "projectId": "p1",
+      "isLocked": false
+    },
+    {
+      "id": "2",
+      "description": "Afternoon meeting",
+      "timeInterval": {
+        "start": "2025-03-18T13:00:00",
+        "end": "2025-03-18T14:30:00",
+        "duration": "PT1H30M"
+      },
+      "workspaceId": "ws1",
+      "userId": "123",
+      "billable": true,
+      "projectId": "p1",
+      "isLocked": false
+    },
+    {
+      "timeInterval": {
+        "start": "2025-03-19T08:30:00",
+        "end": "2025-03-19T16:30:00",
+        "duration": "PT8H0M"
+      },
+      "description": "Project development"
+    }
+  ]
+}
