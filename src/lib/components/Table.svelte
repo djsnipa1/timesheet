@@ -12,6 +12,11 @@
 	import * as Table from '$lib/components/ui/table/index.js';
 	import * as Tabs from '$lib/components/ui/tabs/index.js';
 	import * as Tooltip from '$lib/components/ui/tooltip/index.js';
+
+	
+	// Add props
+	export let year;
+	export let month;
 </script>
 
 <div class="p-4">

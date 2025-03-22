@@ -1,5 +1,6 @@
 <script>
 	import * as Card from '$lib/components/ui/card';
+	import * as Table from '$lib/components/ui/table/index.js';
 	import { Separator } from '$lib/components/ui/separator';
 	import { onMount } from 'svelte';
 	import { employeeStore } from '$lib/stores/employeeStore';
@@ -150,7 +151,7 @@
 							<span class="ml-2">{employee?.id || ''}</span>
 						</div> -->
 						<div class="flex">
-							<strong class="shrink-0 text-gruvbox-aqua">Address:</strong>
+							<strong class="text-gruvbox-aqua shrink-0">Address:</strong>
 							<div class="ml-2 whitespace-pre-line">{employeeStatic.address || ''}</div>
 						</div>
 						<div>
@@ -229,4 +230,47 @@
 			</Card.Root>
 		</div>
 	{/if}
-</div>
+
+	<!-- table starts here -->
+		<Card.Root>
+			<!-- <Card.Header class="px-7">
+				<Card.Title>Orders</Card.Title>
+				<Card.Description>Recent orders from your store.</Card.Description>
+			</Card.Header> -->
+			<Card.Content>
+				<Table.Root class="font-georama">
+					<Table.Header>
+						<Table.Row>
+							<Table.Head class="w-[40%] border-r text-center">Date</Table.Head>
+							<Table.Head class="w-[20%] border-r text-center">Clock In</Table.Head>
+							<Table.Head class="w-[20%] border-r text-center">Clock Out</Table.Head>
+							<Table.Head class="w-[20%] text-center">Total Hours</Table.Head>
+						</Table.Row>
+					</Table.Header>
+					<Table.Body>
+						{#each Object.entries(groupedFilteredEntries) as [date, entries] (date)}
+							{#each entries as entry}
+								<Table.Row class="even:bg-muted odd:bg-card">
+									<Table.Cell class="border-r">
+										<div class="text-lg font-normal tracking-tight">{date}</div>
+										<div class="text-xs tracking-tight text-muted-foreground">
+											{entry.description}
+										</div>
+									</Table.Cell>
+									<Table.Cell class="text-base tracking-wider text-center border-r whitespace-nowrap">
+										{formatTime(entry.timeInterval?.start)}
+									</Table.Cell>
+									<Table.Cell class="text-base tracking-wider text-center border-r whitespace-nowrap">
+										{formatTime(entry.timeInterval?.end)}
+									</Table.Cell>
+									<Table.Cell class="text-base tracking-wider text-center whitespace-nowrap">
+										{calculateDuration(entry.timeInterval.duration)}
+									</Table.Cell>
+								</Table.Row>
+							{/each}
+						{/each}
+					</Table.Body>
+				</Table.Root>
+			</Card.Content>
+		</Card.Root>
+	</div>
