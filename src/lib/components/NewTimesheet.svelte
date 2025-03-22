@@ -115,27 +115,27 @@
 </script>
 
 <div
-	class="w-full min-h-screen p-2 bg-gruvbox-bg text-gruvbox-fg md:container md:mx-auto md:max-w-2xl"
+	class="w-full min-h-screen p-2 bg-background text-foreground md:container md:mx-auto md:max-w-2xl"
 >
 	<div class="flex items-center justify-around mb-4">
-		<h1 class="text-2xl font-bold text-gruvbox-blue">
+		<h1 class="text-2xl font-bold font-georama text-foreground">
 			Employee Time Sheet
-			<span class="mx-4 text-lg">&#x221e;</span>
+			<span class="mx-4 text-3xl">&#x221e;</span>
 			{new Date(year, month - 1).toLocaleString('default', { month: 'long', year: 'numeric' })}
 		</h1>
 	</div>
 
 	{#if isLoading}
-		<div class="p-4 text-center">
-			<span class="text-gruvbox-blue">Loading...</span>
+		<div class="p-4 text-center bg-muted text-muted-foreground">
+			<span class="font-georama">Loading...</span>
 		</div>
 	{:else if error}
-		<div class="p-4 text-center rounded-lg bg-gruvbox-red/10 text-gruvbox-red">
+		<div class="p-4 text-center rounded-lg bg-secondary text-secondary-foreground">
 			<span>Error: {error}</span>
 		</div>
 	{:else}
 		<div class="space-y-4">
-			<Card.Root class="overflow-hidden bg-gruvbox-bg-soft">
+			<Card.Root class="overflow-hidden border-card-foreground bg-card">
 				<Card.Header class="p-3 sm:p-4">
 					<Card.Title class="text-lg text-gruvbox-purple">Employee Information</Card.Title>
 				</Card.Header>
