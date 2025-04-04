@@ -119,9 +119,9 @@
 	class="w-full min-h-screen p-2 bg-background text-foreground md:container md:mx-auto md:max-w-2xl"
 >
 	<div class="flex items-center justify-around mb-4">
-		<h1 class="text-2xl font-bold font-georama text-foreground">
+		<h1 class="text-2xl font-bold text-center font-georama text-foreground">
 			Employee Time Sheet
-			<span class="mx-4 text-3xl">&#x221e;</span>
+			<span class="hidden mx-4 text-3xl sm:block">&#x221e;</span>
 			{new Date(year, month - 1).toLocaleString('default', { month: 'long', year: 'numeric' })}
 		</h1>
 	</div>
@@ -160,7 +160,7 @@
 						</div>
 						<div>
 							<strong class="text-gruvbox-aqua">Email:</strong>
-							<span class="ml-2">{employee?.email || ''}</span>
+							<span class="ml-2">{employeeStatic.email || ''}</span>
 						</div>
 						<!-- <div> -->
 						<!-- <strong class="text-gruvbox-aqua">Department:</strong> -->
@@ -170,7 +170,7 @@
 				</Card.Content>
 			</Card.Root>
 
-			<Card.Root class="overflow-hidden bg-gruvbox-bg-soft">
+			<!-- <Card.Root class="overflow-hidden bg-gruvbox-bg-soft">
 				<Card.Header class="p-3 sm:p-4">
 					<Card.Title class="text-lg text-gruvbox-purple">Time Entries</Card.Title>
 				</Card.Header>
@@ -218,9 +218,26 @@
 						{/each}
 					</div>
 				</Card.Content>
-			</Card.Root>
+			</Card.Root> -->
 
-			<Card.Root class="overflow-hidden bg-gruvbox-blue text-gruvbox-bg">
+			<!-- <Card.Root class="overflow-hidden bg-gruvbox-blue text-gruvbox-bg">
+				<Card.Content class="p-3 sm:p-4">
+					<div class="flex items-center justify-between">
+						<span class="text-base font-semibold sm:text-lg">Total Hours for Week:</span>
+						<span class="text-lg font-bold sm:text-xl"></span>
+					</div>
+				</Card.Content>
+			</Card.Root> -->
+		</div>
+	{/if}
+
+	<!-- table starts here -->
+	<Card.Root>
+		<!-- <Card.Header class="px-7">
+				<Card.Title>Orders</Card.Title>
+				<Card.Description>Recent orders from your store.</Card.Description>
+			</Card.Header> -->
+<Card.Root class="overflow-hidden bg-gruvbox-blue text-gruvbox-bg">
 				<Card.Content class="p-3 sm:p-4">
 					<div class="flex items-center justify-between">
 						<span class="text-base font-semibold sm:text-lg">Total Hours for Week:</span>
@@ -228,42 +245,44 @@
 					</div>
 				</Card.Content>
 			</Card.Root>
-		</div>
-	{/if}
 
-	<!-- table starts here -->
-		<Card.Root>
-			<!-- <Card.Header class="px-7">
-				<Card.Title>Orders</Card.Title>
-				<Card.Description>Recent orders from your store.</Card.Description>
-			</Card.Header> -->
-			<Card.Content>
+		<Card.Content>
+			<!-- Desktop Table (hidden below sm breakpoint) -->
+			<div class="hidden sm:block">
 				<Table.Root class="font-georama">
 					<Table.Header>
 						<Table.Row>
-							<Table.Head class="w-[40%] border-r text-center">Date</Table.Head>
-							<Table.Head class="w-[20%] border-r text-center">Clock In</Table.Head>
-							<Table.Head class="w-[20%] border-r text-center">Clock Out</Table.Head>
-							<Table.Head class="w-[20%] text-center">Total Hours</Table.Head>
+							<Table.Head class="w-[35%] border-r p-2 sm:p-4 text-center text-xs sm:text-base">
+								Date
+							</Table.Head>
+							<Table.Head class="w-[22%] border-r p-2 sm:p-4 text-center text-xs sm:text-base">
+								Clock In
+							</Table.Head>
+							<Table.Head class="w-[22%] border-r p-2 sm:p-4 text-center text-xs sm:text-base">
+								Clock Out
+							</Table.Head>
+							<Table.Head class="w-[21%] p-2 text-center text-xs sm:text-base">
+								Hours
+							</Table.Head>
 						</Table.Row>
 					</Table.Header>
 					<Table.Body>
 						{#each Object.entries(groupedFilteredEntries) as [date, entries] (date)}
 							{#each entries as entry}
-								<Table.Row class="even:bg-muted odd:bg-card">
-									<Table.Cell class="border-r">
-										<div class="text-lg font-normal tracking-tight">{date}</div>
-										<div class="text-xs tracking-tight text-muted-foreground">
+								<Table.Row class="min-h-[3rem] sm:min-h-[4rem] odd:bg-card even:bg-muted">
+									<Table.Cell class="p-2 border-r sm:p-4">
+										<div class="text-sm font-normal tracking-tight sm:text-lg">{date}</div>
+										<div class="text-[10px] sm:text-xs tracking-tight text-muted-foreground">
 											{entry.description}
 										</div>
 									</Table.Cell>
-									<Table.Cell class="text-base tracking-wider text-center border-r whitespace-nowrap">
+									<Table.Cell class="p-2 text-xs tracking-wider text-center border-r sm:p-4 sm:text-base whitespace-nowrap">
 										{formatTime(entry.timeInterval?.start)}
 									</Table.Cell>
-									<Table.Cell class="text-base tracking-wider text-center border-r whitespace-nowrap">
+									<Table.Cell class="p-2 text-xs tracking-wider text-center border-r sm:p-4 sm:text-base whitespace-nowrap">
 										{formatTime(entry.timeInterval?.end)}
 									</Table.Cell>
-									<Table.Cell class="text-base tracking-wider text-center whitespace-nowrap">
+									<Table.Cell class="p-2 text-xs tracking-wider text-center sm:p-4 sm:text-base whitespace-nowrap">
 										{calculateDuration(entry.timeInterval.duration)}
 									</Table.Cell>
 								</Table.Row>
@@ -271,6 +290,41 @@
 						{/each}
 					</Table.Body>
 				</Table.Root>
-			</Card.Content>
-		</Card.Root>
-	</div>
+			</div>
+
+			<!-- Mobile Cards (hidden above sm breakpoint) -->
+			<div class="space-y-4 sm:hidden">
+				{#each Object.entries(groupedFilteredEntries) as [date, entries] (date)}
+					{#each entries as entry}
+						<Card.Root class="overflow-hidden bg-card">
+							<Card.Content class="p-4">
+								<div class="space-y-2">
+									<div class="text-base font-semibold">{date}</div>
+									<div class="text-xs text-muted-foreground">{entry.description}</div>
+									
+									<div class="grid grid-cols-2 gap-2 pt-2">
+										<div>
+											<div class="text-xs text-muted-foreground">Clock In</div>
+											<div class="text-sm">{formatTime(entry.timeInterval?.start)}</div>
+										</div>
+										<div>
+											<div class="text-xs text-muted-foreground">Clock Out</div>
+											<div class="text-sm">{formatTime(entry.timeInterval?.end)}</div>
+										</div>
+									</div>
+									
+									<div class="pt-2">
+										<div class="text-xs text-muted-foreground">Total Hours</div>
+										<div class="text-sm font-medium">
+											{calculateDuration(entry.timeInterval.duration)}
+										</div>
+									</div>
+								</div>
+							</Card.Content>
+						</Card.Root>
+					{/each}
+				{/each}
+			</div>
+		</Card.Content>
+	</Card.Root>
+</div>
