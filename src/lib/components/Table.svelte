@@ -15,8 +15,8 @@
 
 	
 	// Add props
-	export let year;
-	export let month;
+	// export let year;
+	// export let month;
 </script>
 
 <div class="p-4">

@@ -1,5 +1,5 @@
 import { fontFamily } from "tailwindcss/defaultTheme";
-import themes from './src/lib/themes.json'
+// import themes from './src/lib/themes.json'
 
 /** @type {import('tailwindcss').Config} */
 const config = {
