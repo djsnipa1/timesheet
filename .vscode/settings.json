@@ -1,0 +1,27 @@
+{
+    "workbench.colorCustomizations": {
+        "panel.border": "#d4d73c",
+        "sash.hoverBorder": "#d4d73c",
+        "tab.activeBorder": "#d4d73c",
+        "statusBar.background": "#b8bb26",
+        "statusBar.foreground": "#1d2021",
+        "statusBarItem.hoverBackground": "#8e911d",
+        "statusBarItem.remoteBackground": "#b8bb26",
+        "statusBarItem.remoteForeground": "#1d2021"
+    },
+    "peacock.color": "#B8BB26",
+    "webPreview.url": "http://localhost:5173/2025/03",
+    "webPreview.mediaScreenOverride": true, // Override default screen object
+    "webPreview.mediaScreen": {
+        // I want the next entry to be the size of a iphone mini 12
+        "iphone 12 mini width": 375,
+        "iPhone 15 width": 430,
+        "iPhone 12 mini": "375x812",
+        "iPhone 15": "430x932",
+        "Mobile": "380x796", // width and height
+        "Tablet": 768,       // width
+        "Laptop": 1024,      // width
+        "Desktop": 1440      // width
+    },
+    
+}
