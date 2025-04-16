@@ -98,10 +98,15 @@
 			const entryDate = new Date(entry.timeInterval.start);
 			return entryDate.getFullYear() === year && entryDate.getMonth() === month - 1;
 		}) ?? [];
-
-	// Add this function to group entries by date
+	// Add this function to group entries by date and sort them
 	const groupEntriesByDate = (entries) => {
-		return entries.reduce((acc, entry) => {
+		// First sort the entries by date
+		const sortedEntries = [...entries].sort((a, b) => 
+			new Date(a.timeInterval.start) - new Date(b.timeInterval.start)
+		);
+
+		// Then group them
+		return sortedEntries.reduce((acc, entry) => {
 			const date = formatDate(entry.timeInterval.start);
 			if (!acc[date]) {
 				acc[date] = [];

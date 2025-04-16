@@ -55,8 +55,8 @@ function createEmployeeStore() {
     fetchAll: async () => {
       setLoading();
       try {
-        if (import.meta.env.DEV) {
-          // Use mock data in development
+        if (import.meta.env.DEV && !import.meta.env.VITE_USE_PRODUCTION_API) {
+          // Use mock data in development unless VITE_USE_PRODUCTION_API is true
           update(state => ({
             ...state,
             employee: mockTimeEntriesData.user,

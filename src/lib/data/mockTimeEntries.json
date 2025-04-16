@@ -40,6 +40,28 @@
         "duration": "PT8H0M"
       },
       "description": "Project development"
+    },
+     {
+      "id": "3",
+      "description": "More shit",
+      "timeInterval": {
+        "start": "2025-04-01T13:00:00",
+        "end": "2025-04-18T14:30:00",
+        "duration": "PT1H30M"
+      },
+      "workspaceId": "ws1",
+      "userId": "123",
+      "billable": true,
+      "projectId": "p1",
+      "isLocked": false
+    },
+    {
+      "timeInterval": {
+        "start": "2025-04-09T08:30:00",
+        "end": "2025-04-19T16:30:00",
+        "duration": "PT8H0M"
+      },
+      "description": "Project development"
     }
-  ]
+    ]
 }
