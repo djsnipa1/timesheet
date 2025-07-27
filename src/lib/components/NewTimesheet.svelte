@@ -120,18 +120,17 @@
 	$: groupedFilteredEntries = groupEntriesByDate(filteredEntries);
 </script>
 
-<div
-	class="w-full min-h-screen p-2 bg-background text-foreground md:container md:mx-auto md:max-w-2xl"
+	<div
+	class="w-full min-h-screen p-2 bg-gruvbox-bg text-gruvbox-fg md:container md:mx-auto md:max-w-2xl"
 >
 	<div class="flex items-center justify-around mb-4">
-		<h1 class="text-2xl font-bold text-center font-georama text-foreground">
+		<h1 class="text-2xl font-bold text-center font-georama text-gruvbox-fg">
 			Employee Time Sheet
-			<span class="hidden mx-4 text-3xl sm:block">&#x221e;</span>
-			{new Date(year, month - 1).toLocaleString('default', { month: 'long', year: 'numeric' })}
+			<br />
+			<span class="hidden mx-4 text-3xl text-gruvbox-orange sm:block">&#x221e;</span>
+			<span class="text-xl">{new Date(year, month - 1).toLocaleString('default', { month: 'long', year: 'numeric' })}</span>
 		</h1>
-	</div>
-
-	{#if isLoading}
+	</div>	{#if isLoading}
 		<div class="p-4 text-center bg-muted text-muted-foreground">
 			<span class="font-georama">Loading...</span>
 		</div>
@@ -141,9 +140,9 @@
 		</div>
 	{:else}
 		<div class="pb-4 space-y-4">
-			<Card.Root class="overflow-hidden bg-card">
-				<Card.Header class="p-3 sm:p-4">
-					<Card.Title class="text-lg text-gruvbox-purple">Employee Information</Card.Title>
+			<Card.Root class="overflow-hidden border bg-gruvbox-bg-soft border-gruvbox-border">
+				<Card.Header class="p-3 pb-0 sm:p-4">
+					<Card.Title class="text-lg text-gruvbox-accent">Employee Information</Card.Title>
 				</Card.Header>
 				<Card.Content class="p-3 sm:p-4">
 					<div class="grid grid-cols-1 gap-3 text-sm sm:grid-cols-2 sm:gap-4">
@@ -237,61 +236,52 @@
 	{/if}
 
 	<!-- table starts here -->
-	<Card.Root>
+	<Card.Root class="bg-gruvbox-bg">
 		<Card.Header class="p-3">
-				<Card.Title>Hours Worked:</Card.Title>
-				<!-- <Card.Description>Recent orders from your store.</Card.Description> -->
-				 <div class="my-2 border-b border-gruvbox-bg-dark opacity-20"></div>
-			</Card.Header>
-		<Card.Root class="overflow-hidden border-0 shadow-none bg-gruvbox-blue text-gruvbox-bg">
-			<!-- <Card.Content class="p-3 sm:p-4">
-				<div class="flex items-center justify-between">
-					<span class="text-base font-semibold sm:text-lg">Hours for Week:</span>
-					<span class="text-lg font-bold sm:text-xl"></span>
-				</div>
-			</Card.Content> -->
-		</Card.Root>
+			<Card.Title class="text-xl font-bold text-gruvbox-fg">Hours Worked</Card.Title>
+			<div class="my-2 border-b border-gruvbox-gray opacity-80"></div>
+		</Card.Header>
 
 		<Card.Content>
 			<!-- Desktop Table (hidden below sm breakpoint) -->
 			<div class="hidden sm:block">
-				<Table.Root class="font-georama">
+				<Table.Root class="border font-georama bg-gruvbox-bg border-gruvbox-border">
 					<Table.Header>
-						<Table.Row>
-							<Table.Head class="w-[35%] border-r p-2 text-center text-xs sm:p-4 sm:text-base">
+						<Table.Row class="bg-gruvbox-bg-soft">
+							<Table.Head class="w-[35%] border-r border-gruvbox-border p-2 text-center text-xs sm:p-4 sm:text-base text-gruvbox-fg font-bold">
 								Date
 							</Table.Head>
-							<Table.Head class="w-[22%] border-r p-2 text-center text-xs sm:p-4 sm:text-base">
+							<Table.Head class="w-[22%] border-r border-gruvbox-border p-2 text-center text-xs sm:p-4 sm:text-base text-gruvbox-fg font-bold">
 								Clock In
 							</Table.Head>
-							<Table.Head class="w-[22%] border-r p-2 text-center text-xs sm:p-4 sm:text-base">
+							<Table.Head class="w-[22%] border-r border-gruvbox-border p-2 text-center text-xs sm:p-4 sm:text-base text-gruvbox-fg font-bold">
 								Clock Out
 							</Table.Head>
-							<Table.Head class="w-[21%] p-2 text-center text-xs sm:text-base">Hours</Table.Head>
+							<Table.Head class="w-[21%] p-2 text-center text-xs sm:p-4 sm:text-base text-gruvbox-fg font-bold">Hours</Table.Head>
 						</Table.Row>
 					</Table.Header>
 					<Table.Body>
 						{#each Object.entries(groupedFilteredEntries) as [date, entries] (date)}
 							{#each entries as entry}
-								<Table.Row class="min-h-[3rem] odd:bg-card even:bg-muted sm:min-h-[4rem]">
-									<Table.Cell class="p-2 border-r sm:p-4">
-										<div class="text-sm font-normal tracking-tight sm:text-lg">{date}</div>
-										<div class="text-[10px] tracking-tight text-muted-foreground sm:text-xs">
+								<Table.Row class="min-h-[3rem] odd:bg-gruvbox-bg even:bg-gruvbox-bg-soft sm:min-h-[4rem]">
+									<Table.Cell class="p-2 border-r border-gruvbox-border sm:p-4">
+										<div class="text-sm font-normal tracking-tight text-gruvbox-fg sm:text-lg">{date}</div>
+										<div class="text-[10px] tracking-tight text-gruvbox-gray sm:text-xs">
 											{entry.description}
 										</div>
 									</Table.Cell>
 									<Table.Cell
-										class="p-2 text-xs tracking-wider text-center border-r whitespace-nowrap sm:p-4 sm:text-base"
+										class="p-2 text-xs tracking-wider text-center border-r border-gruvbox-border whitespace-nowrap sm:p-4 sm:text-base text-gruvbox-fg"
 									>
 										{formatTime(entry.timeInterval?.start)}
 									</Table.Cell>
 									<Table.Cell
-										class="p-2 text-xs tracking-wider text-center border-r whitespace-nowrap sm:p-4 sm:text-base"
+										class="p-2 text-xs tracking-wider text-center border-r border-gruvbox-border whitespace-nowrap sm:p-4 sm:text-base text-gruvbox-fg"
 									>
 										{formatTime(entry.timeInterval?.end)}
 									</Table.Cell>
 									<Table.Cell
-										class="p-2 text-xs tracking-wider text-center whitespace-nowrap sm:p-4 sm:text-base"
+										class="p-2 text-xs tracking-wider text-center whitespace-nowrap sm:p-4 sm:text-base text-gruvbox-fg"
 									>
 										{calculateDuration(entry.timeInterval.duration)}
 									</Table.Cell>
@@ -306,26 +296,26 @@
 			<div class="space-y-4 sm:hidden">
 				{#each Object.entries(groupedFilteredEntries) as [date, entries] (date)}
 					{#each entries as entry}
-						<Card.Root class="overflow-hidden bg-card">
+						<Card.Root class="overflow-hidden border bg-gruvbox-bg-soft border-gruvbox-border">
 							<Card.Content class="p-4">
 								<div class="space-y-2">
-									<div class="text-base font-semibold">{date}</div>
-									<div class="text-xs text-muted-foreground">{entry.description}</div>
+									<div class="text-base font-semibold text-gruvbox-fg">{date}</div>
+									<div class="text-xs text-gruvbox-gray">{entry.description}</div>
 
 									<div class="grid grid-cols-2 gap-2 pt-2">
 										<div>
-											<div class="text-xs text-muted-foreground">Clock In</div>
-											<div class="text-sm">{formatTime(entry.timeInterval?.start)}</div>
+											<div class="text-xs text-gruvbox-gray">Clock In</div>
+											<div class="text-sm text-gruvbox-fg">{formatTime(entry.timeInterval?.start)}</div>
 										</div>
 										<div>
-											<div class="text-xs text-muted-foreground">Clock Out</div>
-											<div class="text-sm">{formatTime(entry.timeInterval?.end)}</div>
+											<div class="text-xs text-gruvbox-gray">Clock Out</div>
+											<div class="text-sm text-gruvbox-fg">{formatTime(entry.timeInterval?.end)}</div>
 										</div>
 									</div>
 
 									<div class="pt-2">
-										<div class="text-xs text-muted-foreground">Total Hours</div>
-										<div class="text-sm font-medium">
+										<div class="text-xs text-gruvbox-gray">Total Hours</div>
+										<div class="text-sm font-medium text-gruvbox-fg">
 											{calculateDuration(entry.timeInterval.duration)}
 										</div>
 									</div>
@@ -339,11 +329,11 @@
 	</Card.Root>
 
 	<!-- Total Hours Summary Card -->
-	<Card.Root class="mt-4 overflow-hidden bg-gruvbox-bg-soft">
+	<Card.Root class="mt-4 overflow-hidden border bg-gruvbox-bg-soft border-gruvbox-border">
 		<Card.Content class="p-4">
 			<div class="flex items-center justify-between">
-				<span class="text-lg font-semibold text-gruvbox-purple">Total Hours for Month:</span>
-				<span class="text-xl font-bold text-gruvbox-blue"
+				<span class="text-lg font-semibold text-gruvbox-accent">Total Hours for Month:</span>
+				<span class="text-xl font-bold text-gruvbox-aqua"
 					>{calculateTotalDuration(filteredEntries)}</span
 				>
 			</div>

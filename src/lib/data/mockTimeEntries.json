@@ -9,8 +9,8 @@
       "id": "1",
       "description": "Regular work day - Mock Time",
       "timeInterval": {
-        "start": "2025-03-18T09:00:00",
-        "end": "2025-03-18T17:00:00",
+        "start": "2025-07-18T09:00:00",
+        "end": "2025-07-18T17:00:00",
         "duration": "PT8H0M"
       },
       "workspaceId": "ws1",
@@ -23,8 +23,8 @@
       "id": "2",
       "description": "Afternoon meeting",
       "timeInterval": {
-        "start": "2025-03-18T13:00:00",
-        "end": "2025-03-18T14:30:00",
+        "start": "2025-07-18T13:00:00",
+        "end": "2025-07-18T14:30:00",
         "duration": "PT1H30M"
       },
       "workspaceId": "ws1",
@@ -35,8 +35,8 @@
     },
     {
       "timeInterval": {
-        "start": "2025-03-19T08:30:00",
-        "end": "2025-03-19T16:30:00",
+        "start": "2025-07-19T08:30:00",
+        "end": "2025-07-19T16:30:00",
         "duration": "PT8H0M"
       },
       "description": "Project development"
@@ -45,8 +45,8 @@
       "id": "3",
       "description": "More shit",
       "timeInterval": {
-        "start": "2025-04-01T13:00:00",
-        "end": "2025-04-18T14:30:00",
+        "start": "2025-07-01T13:00:00",
+        "end": "2025-07-18T14:30:00",
         "duration": "PT1H30M"
       },
       "workspaceId": "ws1",
@@ -57,8 +57,8 @@
     },
     {
       "timeInterval": {
-        "start": "2025-04-09T08:30:00",
-        "end": "2025-04-19T16:30:00",
+        "start": "2025-07-09T08:30:00",
+        "end": "2025-07-19T16:30:00",
         "duration": "PT8H0M"
       },
       "description": "Project development"

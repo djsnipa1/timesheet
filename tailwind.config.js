@@ -24,6 +24,25 @@ const config = {
 		},
 		extend: {
 			colors: {
+				gruvbox: {
+					bg: '#fbf1c7',
+					'bg-soft': '#ebdbb2',
+					'bg-hard': '#f9f5d7',
+					fg: '#3c3836',
+					gray: '#7c6f64',
+					'gray-dim': '#928374',
+					red: '#cc241d',
+					green: '#98971a',
+					yellow: '#d79921',
+					blue: '#458588',
+					purple: '#b16286',
+					aqua: '#689d6a',
+					orange: '#d65d0e',
+					neutral: '#504945',
+					border: '#d5c4a1',
+					accent: '#b57614',
+					neutral2: '#665c54'
+				},
 				border: "oklch(var(--border))",
 				input: "oklch(var(--input))",
 				ring: "oklch(var(--ring))",
