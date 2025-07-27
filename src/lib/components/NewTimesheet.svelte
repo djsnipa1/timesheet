@@ -101,8 +101,8 @@
 	// Add this function to group entries by date and sort them
 	const groupEntriesByDate = (entries) => {
 		// First sort the entries by date
-		const sortedEntries = [...entries].sort((a, b) => 
-			new Date(a.timeInterval.start) - new Date(b.timeInterval.start)
+		const sortedEntries = [...entries].sort(
+			(a, b) => new Date(a.timeInterval.start) - new Date(b.timeInterval.start)
 		);
 
 		// Then group them
@@ -140,8 +140,8 @@
 			<span>Error: {error}</span>
 		</div>
 	{:else}
-		<div class="space-y-4">
-			<Card.Root class="overflow-hidden border-card-foreground bg-card">
+		<div class="pb-4 space-y-4">
+			<Card.Root class="overflow-hidden bg-card">
 				<Card.Header class="p-3 sm:p-4">
 					<Card.Title class="text-lg text-gruvbox-purple">Employee Information</Card.Title>
 				</Card.Header>
@@ -238,18 +238,19 @@
 
 	<!-- table starts here -->
 	<Card.Root>
-		<!-- <Card.Header class="px-7">
-				<Card.Title>Orders</Card.Title>
-				<Card.Description>Recent orders from your store.</Card.Description>
-			</Card.Header> -->
-<Card.Root class="overflow-hidden bg-gruvbox-blue text-gruvbox-bg">
-				<Card.Content class="p-3 sm:p-4">
-					<div class="flex items-center justify-between">
-						<span class="text-base font-semibold sm:text-lg">Total Hours for Week:</span>
-						<span class="text-lg font-bold sm:text-xl"></span>
-					</div>
-				</Card.Content>
-			</Card.Root>
+		<Card.Header class="p-3">
+				<Card.Title>Hours Worked:</Card.Title>
+				<!-- <Card.Description>Recent orders from your store.</Card.Description> -->
+				 <div class="my-2 border-b border-gruvbox-bg-dark opacity-20"></div>
+			</Card.Header>
+		<Card.Root class="overflow-hidden border-0 shadow-none bg-gruvbox-blue text-gruvbox-bg">
+			<!-- <Card.Content class="p-3 sm:p-4">
+				<div class="flex items-center justify-between">
+					<span class="text-base font-semibold sm:text-lg">Hours for Week:</span>
+					<span class="text-lg font-bold sm:text-xl"></span>
+				</div>
+			</Card.Content> -->
+		</Card.Root>
 
 		<Card.Content>
 			<!-- Desktop Table (hidden below sm breakpoint) -->
@@ -257,37 +258,41 @@
 				<Table.Root class="font-georama">
 					<Table.Header>
 						<Table.Row>
-							<Table.Head class="w-[35%] border-r p-2 sm:p-4 text-center text-xs sm:text-base">
+							<Table.Head class="w-[35%] border-r p-2 text-center text-xs sm:p-4 sm:text-base">
 								Date
 							</Table.Head>
-							<Table.Head class="w-[22%] border-r p-2 sm:p-4 text-center text-xs sm:text-base">
+							<Table.Head class="w-[22%] border-r p-2 text-center text-xs sm:p-4 sm:text-base">
 								Clock In
 							</Table.Head>
-							<Table.Head class="w-[22%] border-r p-2 sm:p-4 text-center text-xs sm:text-base">
+							<Table.Head class="w-[22%] border-r p-2 text-center text-xs sm:p-4 sm:text-base">
 								Clock Out
 							</Table.Head>
-							<Table.Head class="w-[21%] p-2 text-center text-xs sm:text-base">
-								Hours
-							</Table.Head>
+							<Table.Head class="w-[21%] p-2 text-center text-xs sm:text-base">Hours</Table.Head>
 						</Table.Row>
 					</Table.Header>
 					<Table.Body>
 						{#each Object.entries(groupedFilteredEntries) as [date, entries] (date)}
 							{#each entries as entry}
-								<Table.Row class="min-h-[3rem] sm:min-h-[4rem] odd:bg-card even:bg-muted">
+								<Table.Row class="min-h-[3rem] odd:bg-card even:bg-muted sm:min-h-[4rem]">
 									<Table.Cell class="p-2 border-r sm:p-4">
 										<div class="text-sm font-normal tracking-tight sm:text-lg">{date}</div>
-										<div class="text-[10px] sm:text-xs tracking-tight text-muted-foreground">
+										<div class="text-[10px] tracking-tight text-muted-foreground sm:text-xs">
 											{entry.description}
 										</div>
 									</Table.Cell>
-									<Table.Cell class="p-2 text-xs tracking-wider text-center border-r sm:p-4 sm:text-base whitespace-nowrap">
+									<Table.Cell
+										class="p-2 text-xs tracking-wider text-center border-r whitespace-nowrap sm:p-4 sm:text-base"
+									>
 										{formatTime(entry.timeInterval?.start)}
 									</Table.Cell>
-									<Table.Cell class="p-2 text-xs tracking-wider text-center border-r sm:p-4 sm:text-base whitespace-nowrap">
+									<Table.Cell
+										class="p-2 text-xs tracking-wider text-center border-r whitespace-nowrap sm:p-4 sm:text-base"
+									>
 										{formatTime(entry.timeInterval?.end)}
 									</Table.Cell>
-									<Table.Cell class="p-2 text-xs tracking-wider text-center sm:p-4 sm:text-base whitespace-nowrap">
+									<Table.Cell
+										class="p-2 text-xs tracking-wider text-center whitespace-nowrap sm:p-4 sm:text-base"
+									>
 										{calculateDuration(entry.timeInterval.duration)}
 									</Table.Cell>
 								</Table.Row>
@@ -306,7 +311,7 @@
 								<div class="space-y-2">
 									<div class="text-base font-semibold">{date}</div>
 									<div class="text-xs text-muted-foreground">{entry.description}</div>
-									
+
 									<div class="grid grid-cols-2 gap-2 pt-2">
 										<div>
 											<div class="text-xs text-muted-foreground">Clock In</div>
@@ -317,7 +322,7 @@
 											<div class="text-sm">{formatTime(entry.timeInterval?.end)}</div>
 										</div>
 									</div>
-									
+
 									<div class="pt-2">
 										<div class="text-xs text-muted-foreground">Total Hours</div>
 										<div class="text-sm font-medium">
@@ -329,6 +334,18 @@
 						</Card.Root>
 					{/each}
 				{/each}
+			</div>
+		</Card.Content>
+	</Card.Root>
+
+	<!-- Total Hours Summary Card -->
+	<Card.Root class="mt-4 overflow-hidden bg-gruvbox-bg-soft">
+		<Card.Content class="p-4">
+			<div class="flex items-center justify-between">
+				<span class="text-lg font-semibold text-gruvbox-purple">Total Hours for Month:</span>
+				<span class="text-xl font-bold text-gruvbox-blue"
+					>{calculateTotalDuration(filteredEntries)}</span
+				>
 			</div>
 		</Card.Content>
 	</Card.Root>
