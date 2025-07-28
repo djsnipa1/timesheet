@@ -120,27 +120,35 @@
 	$: groupedFilteredEntries = groupEntriesByDate(filteredEntries);
 </script>
 
-	<div
-	class="w-full min-h-screen p-2 bg-gruvbox-bg text-gruvbox-fg md:container md:mx-auto md:max-w-2xl"
+<div
+	class="min-h-screen w-full bg-gruvbox-bg p-2 text-gruvbox-fg md:container md:mx-auto md:max-w-2xl"
 >
-	<div class="flex items-center justify-around mb-4">
-		<h1 class="text-2xl font-bold text-center font-georama text-gruvbox-fg">
-			Employee Time Sheet
-			<br />
-			<span class="hidden mx-4 text-3xl text-gruvbox-orange sm:block">&#x221e;</span>
-			<span class="text-xl">{new Date(year, month - 1).toLocaleString('default', { month: 'long', year: 'numeric' })}</span>
+	<div class="mb-4 flex items-center justify-around">
+		<h1
+			class="text-center font-georama text-2xl font-bold text-gruvbox-fg md:flex md:items-center md:justify-center"
+		>
+			<span class="md:mr-2">Employee Time Sheet</span>
+			<br class="md:hidden" />
+			<span class="hidden md:inline">-&nbsp;</span>
+			<span class="md:flex-grow md:text-left"
+				>{new Date(year, month - 1).toLocaleString('default', {
+					month: 'long',
+					year: 'numeric'
+				})}</span
+			>
 		</h1>
-	</div>	{#if isLoading}
-		<div class="p-4 text-center bg-muted text-muted-foreground">
+	</div>
+	{#if isLoading}
+		<div class="bg-muted p-4 text-center text-muted-foreground">
 			<span class="font-georama">Loading...</span>
 		</div>
 	{:else if error}
-		<div class="p-4 text-center rounded-lg bg-secondary text-secondary-foreground">
+		<div class="rounded-lg bg-secondary p-4 text-center text-secondary-foreground">
 			<span>Error: {error}</span>
 		</div>
 	{:else}
-		<div class="pb-4 space-y-4">
-			<Card.Root class="overflow-hidden border bg-gruvbox-bg-soft border-gruvbox-border">
+		<div class="space-y-4 pb-4">
+			<Card.Root class="overflow-hidden border border-gruvbox-border bg-gruvbox-bg-soft">
 				<Card.Header class="p-3 pb-0 sm:p-4">
 					<Card.Title class="text-lg text-gruvbox-accent">Employee Information</Card.Title>
 				</Card.Header>
@@ -155,7 +163,7 @@
 							<span class="ml-2">{employee?.id || ''}</span>
 						</div> -->
 						<div class="flex">
-							<strong class="text-gruvbox-aqua shrink-0">Address:</strong>
+							<strong class="shrink-0 text-gruvbox-aqua">Address:</strong>
 							<div class="ml-2 whitespace-pre-line">{employeeStatic.address || ''}</div>
 						</div>
 						<div>
@@ -245,43 +253,56 @@
 		<Card.Content>
 			<!-- Desktop Table (hidden below sm breakpoint) -->
 			<div class="hidden sm:block">
-				<Table.Root class="border font-georama bg-gruvbox-bg border-gruvbox-border">
+				<Table.Root class="border border-gruvbox-border bg-gruvbox-bg font-georama">
 					<Table.Header>
 						<Table.Row class="bg-gruvbox-bg-soft">
-							<Table.Head class="w-[35%] border-r border-gruvbox-border p-2 text-center text-xs sm:p-4 sm:text-base text-gruvbox-fg font-bold">
+							<Table.Head
+								class="w-[35%] border-r border-gruvbox-border p-2 text-center text-xs font-bold text-gruvbox-fg sm:p-4 sm:text-base"
+							>
 								Date
 							</Table.Head>
-							<Table.Head class="w-[22%] border-r border-gruvbox-border p-2 text-center text-xs sm:p-4 sm:text-base text-gruvbox-fg font-bold">
+							<Table.Head
+								class="w-[22%] border-r border-gruvbox-border p-2 text-center text-xs font-bold text-gruvbox-fg sm:p-4 sm:text-base"
+							>
 								Clock In
 							</Table.Head>
-							<Table.Head class="w-[22%] border-r border-gruvbox-border p-2 text-center text-xs sm:p-4 sm:text-base text-gruvbox-fg font-bold">
+							<Table.Head
+								class="w-[22%] border-r border-gruvbox-border p-2 text-center text-xs font-bold text-gruvbox-fg sm:p-4 sm:text-base"
+							>
 								Clock Out
 							</Table.Head>
-							<Table.Head class="w-[21%] p-2 text-center text-xs sm:p-4 sm:text-base text-gruvbox-fg font-bold">Hours</Table.Head>
+							<Table.Head
+								class="w-[21%] p-2 text-center text-xs font-bold text-gruvbox-fg sm:p-4 sm:text-base"
+								>Hours</Table.Head
+							>
 						</Table.Row>
 					</Table.Header>
 					<Table.Body>
 						{#each Object.entries(groupedFilteredEntries) as [date, entries] (date)}
 							{#each entries as entry}
-								<Table.Row class="min-h-[3rem] odd:bg-gruvbox-bg even:bg-gruvbox-bg-soft sm:min-h-[4rem]">
-									<Table.Cell class="p-2 border-r border-gruvbox-border sm:p-4">
-										<div class="text-sm font-normal tracking-tight text-gruvbox-fg sm:text-lg">{date}</div>
+								<Table.Row
+									class="min-h-[3rem] odd:bg-gruvbox-bg even:bg-gruvbox-bg-soft sm:min-h-[4rem]"
+								>
+									<Table.Cell class="border-r border-gruvbox-border p-2 sm:p-4">
+										<div class="text-sm font-normal tracking-tight text-gruvbox-fg sm:text-lg">
+											{date}
+										</div>
 										<div class="text-[10px] tracking-tight text-gruvbox-gray sm:text-xs">
 											{entry.description}
 										</div>
 									</Table.Cell>
 									<Table.Cell
-										class="p-2 text-xs tracking-wider text-center border-r border-gruvbox-border whitespace-nowrap sm:p-4 sm:text-base text-gruvbox-fg"
+										class="whitespace-nowrap border-r border-gruvbox-border p-2 text-center text-xs tracking-wider text-gruvbox-fg sm:p-4 sm:text-base"
 									>
 										{formatTime(entry.timeInterval?.start)}
 									</Table.Cell>
 									<Table.Cell
-										class="p-2 text-xs tracking-wider text-center border-r border-gruvbox-border whitespace-nowrap sm:p-4 sm:text-base text-gruvbox-fg"
+										class="whitespace-nowrap border-r border-gruvbox-border p-2 text-center text-xs tracking-wider text-gruvbox-fg sm:p-4 sm:text-base"
 									>
 										{formatTime(entry.timeInterval?.end)}
 									</Table.Cell>
 									<Table.Cell
-										class="p-2 text-xs tracking-wider text-center whitespace-nowrap sm:p-4 sm:text-base text-gruvbox-fg"
+										class="whitespace-nowrap p-2 text-center text-xs tracking-wider text-gruvbox-fg sm:p-4 sm:text-base"
 									>
 										{calculateDuration(entry.timeInterval.duration)}
 									</Table.Cell>
@@ -296,7 +317,7 @@
 			<div class="space-y-4 sm:hidden">
 				{#each Object.entries(groupedFilteredEntries) as [date, entries] (date)}
 					{#each entries as entry}
-						<Card.Root class="overflow-hidden border bg-gruvbox-bg-soft border-gruvbox-border">
+						<Card.Root class="overflow-hidden border border-gruvbox-border bg-gruvbox-bg-soft">
 							<Card.Content class="p-4">
 								<div class="space-y-2">
 									<div class="text-base font-semibold text-gruvbox-fg">{date}</div>
@@ -305,11 +326,15 @@
 									<div class="grid grid-cols-2 gap-2 pt-2">
 										<div>
 											<div class="text-xs text-gruvbox-gray">Clock In</div>
-											<div class="text-sm text-gruvbox-fg">{formatTime(entry.timeInterval?.start)}</div>
+											<div class="text-sm text-gruvbox-fg">
+												{formatTime(entry.timeInterval?.start)}
+											</div>
 										</div>
 										<div>
 											<div class="text-xs text-gruvbox-gray">Clock Out</div>
-											<div class="text-sm text-gruvbox-fg">{formatTime(entry.timeInterval?.end)}</div>
+											<div class="text-sm text-gruvbox-fg">
+												{formatTime(entry.timeInterval?.end)}
+											</div>
 										</div>
 									</div>
 
@@ -329,7 +354,7 @@
 	</Card.Root>
 
 	<!-- Total Hours Summary Card -->
-	<Card.Root class="mt-4 overflow-hidden border bg-gruvbox-bg-soft border-gruvbox-border">
+	<Card.Root class="mt-4 overflow-hidden border border-gruvbox-border bg-gruvbox-bg-soft">
 		<Card.Content class="p-4">
 			<div class="flex items-center justify-between">
 				<span class="text-lg font-semibold text-gruvbox-accent">Total Hours for Month:</span>
