@@ -53,9 +53,11 @@
 	}
 </script>
 
-<div class="space-y-6">
+<div class="space-y-6 bg-gruvbox-bg-soft">
 	<!-- Header with Year Selector -->
-	<div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+	<div
+		class="flex flex-col gap-4 bg-gruvbox-bg-soft sm:flex-row sm:items-center sm:justify-between"
+	>
 		<h3 class="text-lg font-semibold text-gray-900">Select Year & Month</h3>
 		<div class="mx-auto block items-center gap-2">
 			<label for="year-select" class="text-sm font-medium text-gray-700">Year:</label>
@@ -77,19 +79,19 @@
 		{#each months as monthData, index}
 			<button
 				onclick={() => selectMonth(index)}
-				class="relative min-h-[70px] rounded-lg border-2 p-4 transition-all duration-200 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 sm:p-4 {month ===
+				class="relative min-h-[70px] rounded-lg border-2 p-4 transition-all duration-200 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-gruvbox-blue focus:ring-offset-2 sm:p-4 {month ===
 				index
-					? 'border-blue-500 bg-blue-50 text-blue-900 shadow-sm'
-					: 'border-gray-200 bg-white text-gray-700 hover:border-gray-300 hover:bg-gray-50'}"
+					? 'border-gruvbox-border/50 bg-gruvbox-bg-soft brightness-90 text-gruvbox-orange shadow-sm'
+					: 'border-gruvbox-border bg-gruvbox-bg text-gruvbox-aqua hover:border-gruvbox-blue hover:bg-gruvbox-red hover:text-gruvbox-green'}"
 			>
 				<div class="text-center">
-					<div class="text-base font-medium sm:text-sm">{monthData.short}</div>
-					<div class="mt-1 text-sm text-gray-500 sm:text-xs">{monthData.name}</div>
+					<div class="text-base font-medium sm:text-sm">{monthData.name}</div>
+					<!-- <div class="mt-1 text-sm text-gruvbox-red sm:text-xs">{monthData.name}</div> -->
 				</div>
 
 				{#if month === index}
 					<div class="absolute right-2 top-2">
-						<svg class="h-4 w-4 text-blue-500" fill="currentColor" viewBox="0 0 20 20">
+						<svg class="h-4 w-4 text-gruvbox-green" fill="currentColor" viewBox="0 0 20 20">
 							<path
 								fill-rule="evenodd"
 								d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"

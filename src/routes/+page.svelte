@@ -15,11 +15,11 @@
 	}
 </script>
 
-<div class="min-h-screen bg-gray-50 p-4 sm:p-8">
-	<div class="mx-auto w-full max-w-lg">
+<div class="min-h-screen bg-gruvbox-bg-soft p-4 sm:p-8">
+	<div class="mx-auto w-full max-w-lg bg-gruvbox-bg-soft">
 		<!-- <h1 class="mb-6 text-2xl font-bold text-gray-900">Month & Year Picker</h1> -->
 
-		<div class="rounded-lg border bg-white p-4 shadow-sm sm:p-6">
+		<div class="rounded-lg border p-4 shadow-sm bg-gruvbox-bg-soft sm:p-6">
 			<MonthYearPicker
 				bind:month={selectedDate.month}
 				bind:year={selectedDate.year}
