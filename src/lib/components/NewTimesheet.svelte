@@ -118,6 +118,23 @@
 
 	// Modify the filtered entries to be grouped
 	$: groupedFilteredEntries = groupEntriesByDate(filteredEntries);
+
+	// --- START: Added for total pay calculation ---
+	const hourlyRate = 25;
+
+	// Reactive variable to calculate the total minutes for the filtered period
+	$: totalMonthlyMinutes = filteredEntries.reduce((total, entry) => {
+		const hours = parseInt(entry.timeInterval.duration.match(/(\d+)H/)?.[1] || 0);
+		const minutes = parseInt(entry.timeInterval.duration.match(/(\d+)M/)?.[1] || 0);
+		return total + hours * 60 + minutes;
+	}, 0);
+
+	// Reactive variable to convert total minutes to decimal hours
+	$: totalMonthlyHoursDecimal = totalMonthlyMinutes / 60;
+
+	// Reactive variable to calculate the final pay
+	$: totalPay = totalMonthlyHoursDecimal * hourlyRate;
+	// --- END: Added for total pay calculation ---
 </script>
 
 <div
@@ -158,10 +175,6 @@
 							<strong class="text-gruvbox-aqua">Name:</strong>
 							<span class="ml-2">{employeeStatic?.name || ''}</span>
 						</div>
-						<!-- <div>
-							<strong class="text-gruvbox-aqua">ID:</strong>
-							<span class="ml-2">{employee?.id || ''}</span>
-						</div> -->
 						<div class="flex">
 							<strong class="shrink-0 text-gruvbox-aqua">Address:</strong>
 							<div class="ml-2 whitespace-pre-line">{employeeStatic.address || ''}</div>
@@ -174,84 +187,19 @@
 							<strong class="text-gruvbox-aqua">Email:</strong>
 							<span class="ml-2">{employeeStatic.email || ''}</span>
 						</div>
-						<!-- <div> -->
-						<!-- <strong class="text-gruvbox-aqua">Department:</strong> -->
-						<!-- <span class="ml-2">{employeeStatic?.department || ''}</span> -->
-						<!-- </div> -->
 					</div>
 				</Card.Content>
 			</Card.Root>
-
-			<!-- <Card.Root class="overflow-hidden bg-gruvbox-bg-soft">
-				<Card.Header class="p-3 sm:p-4">
-					<Card.Title class="text-lg text-gruvbox-purple">Time Entries</Card.Title>
-				</Card.Header>
-				<Card.Content class="p-3 sm:p-4">
-					<div class="space-y-4">
-						{#each Object.entries(groupedFilteredEntries) as [date, entries] (date)}
-							<div class="p-3 rounded-lg bg-gruvbox-bg sm:p-4">
-								<div class="mb-2 text-base font-semibold text-black sm:text-lg">
-									{date}
-								</div>
-								<Separator class="my-2 bg-gruvbox-gray" />
-								{#each entries as entry}
-									<div class="mb-4">
-										<div class="mb-2 text-base font-semibold text-gruvbox-blue sm:text-sm">
-											Description: <span class="font-normal text-black">{entry.description}</span>
-										</div>
-										<div class="grid grid-cols-1 gap-1 sm:grid-cols-2">
-											<div class="space-y-1">
-												<span class="block text-sm font-semibold text-gruvbox-blue">
-													Clock In: <span class="font-normal text-black"
-														>{formatTime(entry.timeInterval?.start)}</span
-													>
-												</span>
-											</div>
-											<div class="space-y-1">
-												<span class="block text-sm font-semibold text-gruvbox-blue">
-													Clock Out: <span class="font-normal text-black"
-														>{formatTime(entry.timeInterval?.end)}</span
-													>
-												</span>
-											</div>
-										</div>
-										{#if entry !== entries[entries.length - 1]}
-											<Separator class="my-2 bg-gruvbox-gray" />
-										{/if}
-									</div>
-								{/each}
-								<Separator class="my-2 bg-gruvbox-blue" />
-								<div class="mb-2 text-sm font-semibold text-gruvbox-blue">
-									Total Hours: <span class="font-normal text-black"
-										>{calculateTotalDuration(entries)}</span
-									>
-								</div>
-							</div>
-						{/each}
-					</div>
-				</Card.Content>
-			</Card.Root> -->
-
-			<!-- <Card.Root class="overflow-hidden bg-gruvbox-blue text-gruvbox-bg">
-				<Card.Content class="p-3 sm:p-4">
-					<div class="flex items-center justify-between">
-						<span class="text-base font-semibold sm:text-lg">Total Hours for Week:</span>
-						<span class="text-lg font-bold sm:text-xl"></span>
-					</div>
-				</Card.Content>
-			</Card.Root> -->
 		</div>
 	{/if}
 
-	<!-- table starts here -->
 	<Card.Root class="bg-gruvbox-bg">
 		<Card.Header class="p-3">
 			<Card.Title class="text-xl font-bold text-gruvbox-fg">Hours Worked</Card.Title>
-			<div class="my-2 border-b border-gruvbox-gray opacity-80"></div>
+			<Separator class="my-2 border-gruvbox-gray opacity-80"></Separator>
 		</Card.Header>
 
 		<Card.Content>
-			<!-- Desktop Table (hidden below sm breakpoint) -->
 			<div class="hidden sm:block">
 				<Table.Root class="border border-gruvbox-border bg-gruvbox-bg font-georama">
 					<Table.Header>
@@ -313,7 +261,6 @@
 				</Table.Root>
 			</div>
 
-			<!-- Mobile Cards (hidden above sm breakpoint) -->
 			<div class="space-y-4 sm:hidden">
 				{#each Object.entries(groupedFilteredEntries) as [date, entries] (date)}
 					{#each entries as entry}
@@ -353,14 +300,24 @@
 		</Card.Content>
 	</Card.Root>
 
-	<!-- Total Hours Summary Card -->
 	<Card.Root class="mt-4 overflow-hidden border border-gruvbox-border bg-gruvbox-bg-soft">
 		<Card.Content class="p-4">
 			<div class="flex items-center justify-between">
-				<span class="text-lg font-semibold text-gruvbox-accent">Total Hours for Month:</span>
+				<span class="text-lg font-semibold text-gruvbox-accent">TOTAL HOURS:</span>
 				<span class="text-xl font-bold text-gruvbox-aqua"
 					>{calculateTotalDuration(filteredEntries)}</span
 				>
+			</div>
+		</Card.Content>
+	</Card.Root>
+
+	<Card.Root class="mt-4 overflow-hidden border border-gruvbox-border bg-gruvbox-bg-soft">
+		<Card.Content class="p-4">
+			<div class="flex items-center justify-between">
+				<span class="text-lg font-semibold text-gruvbox-accent">($25/hr) TOTAL $:</span>
+				<span class="text-xl font-bold text-gruvbox-aqua">
+					{totalPay.toLocaleString('en-US', { style: 'currency', currency: 'USD' })}
+				</span>
 			</div>
 		</Card.Content>
 	</Card.Root>
